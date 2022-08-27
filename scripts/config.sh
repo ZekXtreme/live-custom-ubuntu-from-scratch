@@ -54,7 +54,12 @@ function customize_image() {
     vim \
     nano \
     less
-
+    # appimagelauncher
+    apt install software-properties-common
+    add-apt-repository ppa:appimagelauncher-team/stable
+    apt update
+    apt install appimagelauncher
+    
     # purge
     apt-get purge -y \
     transmission-gtk \
