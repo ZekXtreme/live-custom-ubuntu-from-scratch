@@ -56,13 +56,14 @@ function customize_image() {
     nano \
     less
     # appimagelauncher
-    apt install software-properties-common
+    apt install software-properties-common -y
     add-apt-repository ppa:appimagelauncher-team/stable
-    apt update
-    apt install appimagelauncher
+    apt update -y
+    apt install appimagelauncher -y
     
     # Librewolf
-    apt update && apt upgrade
+    apt update -y
+    apt upgrade -y
     distro=$(if echo " bullseye focal impish uma una " | grep -q " $(lsb_release -sc) "; then echo $(lsb_release -sc); else echo focal; fi)
     echo "deb [arch=amd64] http://deb.librewolf.net $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/librewolf.list
     wget https://deb.librewolf.net/keyring.gpg -O /etc/apt/trusted.gpg.d/librewolf.gpg
