@@ -21,10 +21,10 @@ jobs:
           sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
           cd ..
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: ubuntu-from-scratch
-          path: |
+          files: |
             scripts/ubuntu-from-scratch.iso
             scripts/image/md5sum.txt
