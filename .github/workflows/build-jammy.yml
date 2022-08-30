@@ -13,7 +13,6 @@ jobs:
         descriptor: ["jammy-latest"]
 
     steps:
-      - name: Checkou
       - uses: actions/checkout@v3
       
       - name: Clean Up
