@@ -70,6 +70,15 @@ function customize_image() {
     apt update -y
     apt install librewolf -y
     
+    # VS-Code & VLC
+    apt install vlc -y
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+    rm microsoft.gpg
+    apt-get update
+    apt-get install -y code
+    
     # purge
     apt-get purge -y \
     transmission-gtk \
@@ -79,6 +88,8 @@ function customize_image() {
     gnome-sudoku \
     aisleriot \
     hitori
+    
+    apt-get autoremove -y
 }
 
 # Used to version the configuration.  If breaking changes occur, manual
