@@ -21,9 +21,19 @@ jobs:
           sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
           cd ..
+          mv scripts/ubuntu-from-scratch.iso ubuntu-from-scratch.iso
+          echo ::set-output name=TIMESTAMP::"$(date +%Y%m%d_%H%M%S)"
+      - name: Compress
+        run: |
+          md5sum ubuntu-from-scratch.iso > ubuntu-from-scratch.md5sum
+          zip ubuntu-from-scratch.zip ubuntu-from-scratch.iso ubuntu-from-scratch.md5sum
+           
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          body: See releases
+          name: ISO Ubuntu_from_scratch Build ${{ steps.build-iso.outputs.TIMESTAMP }}
+          tag_name: Ubuntu_from_scratch-${{ steps.build-iso.outputs.TIMESTAMP }}
           files: |
-            scripts/ubuntu-from-scratch.iso
-            scripts/image/md5sum.txt
+            ubuntu-from-scratch.zip 
+         
