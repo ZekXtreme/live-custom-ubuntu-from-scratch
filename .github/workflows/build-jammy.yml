@@ -32,8 +32,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: See releases
-          name: ISO Ubuntu_from_scratch Build ${{ steps.build-iso.outputs.TIMESTAMP }}
-          tag_name: Ubuntu_from_scratch-${{ steps.build-iso.outputs.TIMESTAMP }}
+          name: ISO Ubuntu-fromscratch Build ${{ steps.build-iso.outputs.TIMESTAMP }}
+          tag_name: iso-build-${{ steps.build-iso.outputs.TIMESTAMP }}
           files: |
             ubuntu-from-scratch.zip 
          
