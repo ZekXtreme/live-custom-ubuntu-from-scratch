@@ -34,7 +34,7 @@ jobs:
           ./build.sh -
           cd ..
           mv scripts/ubuntu-from-scratch.iso ubuntu-${{ matrix.descriptor }}.iso          
-          echo ::set-output name=TIMESTAMP::"$(date +%Y%m%d_%H%M%S)"
+          echo ::set-output name=TIMESTAMP::"$(date +%Y-%m-%d_%H-%M-%S)"
       - name: Compress
         run: |
           md5sum ubuntu-${{ matrix.descriptor }}.iso > ubuntu-${{ matrix.descriptor }}.md5sum
