@@ -1,39 +1,35 @@
-name: build-jammy
+name: build
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
   workflow_dispatch:
-
+concurrency: 
+  group: ubuntu-iso-build
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        descriptor: ["jammy-latest"]
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Build
+      - uses: actions/checkout@v3
+      - name: Build ISO
+        id: build-iso
         run: |
           cd scripts
-          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="jammy"/g' default_config.sh
-          sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
           cd ..
-          mv scripts/ubuntu-from-scratch.iso ubuntu-from-scratch.iso
+          mv scripts/ubuntu-from-scratch.iso ubuntu-${{ matrix.descriptor }}.iso          
           echo ::set-output name=TIMESTAMP::"$(date +%Y%m%d_%H%M%S)"
       - name: Compress
         run: |
-          md5sum ubuntu-from-scratch.iso > ubuntu-from-scratch.md5sum
-          zip ubuntu-from-scratch.zip ubuntu-from-scratch.iso ubuntu-from-scratch.md5sum
-           
-      - name: Release
-        uses: softprops/action-gh-release@v1
+          md5sum ubuntu-${{ matrix.descriptor }}.iso > regolith-${{ matrix.descriptor }}.md5sum
+          zip ubuntu-${{ matrix.descriptor }}.zip ubuntu-${{ matrix.descriptor }}.iso regolith-${{ matrix.descriptor }}.md5sum
+      - uses: softprops/action-gh-release@v1
         with:
-          body: See releases
-          name: ISO Ubuntu-fromscratch Build ${{ steps.build-iso.outputs.TIMESTAMP }}
-          tag_name: iso-build-${{ steps.build-iso.outputs.TIMESTAMP }}
+          body: See Releases
+          name: ISO ${{ matrix.descriptor }} Build ${{ steps.build-iso.outputs.TIMESTAMP }}
+          tag_name: ${{ matrix.descriptor }}-${{ steps.build-iso.outputs.TIMESTAMP }}
           files: |
-            ubuntu-from-scratch.zip 
-         
+            ubuntu-${{ matrix.descriptor }}.zip
