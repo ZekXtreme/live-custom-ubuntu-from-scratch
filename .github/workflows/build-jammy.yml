@@ -1,4 +1,4 @@
-name: build
+name: Jammy
 
 on:
   workflow_dispatch:
@@ -24,8 +24,8 @@ jobs:
           echo ::set-output name=TIMESTAMP::"$(date +%Y%m%d_%H%M%S)"
       - name: Compress
         run: |
-          md5sum ubuntu-${{ matrix.descriptor }}.iso > regolith-${{ matrix.descriptor }}.md5sum
-          zip ubuntu-${{ matrix.descriptor }}.zip ubuntu-${{ matrix.descriptor }}.iso regolith-${{ matrix.descriptor }}.md5sum
+          md5sum ubuntu-${{ matrix.descriptor }}.iso > ubuntu-${{ matrix.descriptor }}.md5sum
+          zip ubuntu-${{ matrix.descriptor }}.zip ubuntu-${{ matrix.descriptor }}.iso ubuntu-${{ matrix.descriptor }}.md5sum
       - uses: softprops/action-gh-release@v1
         with:
           body: See Releases
