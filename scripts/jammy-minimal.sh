@@ -43,6 +43,7 @@ function customize_image() {
     apt-get install -y \
     plymouth-theme-ubuntu-logo \
     ubuntu-gnome-desktop \
+    nautilus \
     ubuntu-gnome-wallpapers
 
     # useful tools
@@ -50,6 +51,8 @@ function customize_image() {
     clamav-daemon \
     terminator \
     apt-transport-https \
+    apturl \
+    apturl-common \
     curl \
     wget \
     vim \
@@ -72,13 +75,7 @@ function customize_image() {
     apt update -y
     apt install librewolf -y
     
-    # Install Flatpak and apps
-    apt install flatpak -y
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    flatpak install flathub com.tutanota.Tutanota -y
-    flatpak install flathub com.discordapp.Discord -y
-    flatpak install flathub com.bitwarden.desktop -y
-    
+     
     # VS-Code & VLC
     apt install vlc -y
     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
@@ -94,7 +91,7 @@ function customize_image() {
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
     apt update -y
     apt install gh -y
-    
+
     # purge
     apt-get purge -y \
     transmission-gtk \

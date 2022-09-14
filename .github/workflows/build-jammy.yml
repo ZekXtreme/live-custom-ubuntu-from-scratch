@@ -7,7 +7,7 @@ on:
       - 'scripts/**'
       - '.github/workflows/**'
   workflow_dispatch:
-  
+
 concurrency: 
   group: ubuntu-iso-build
   cancel-in-progress: true
@@ -16,7 +16,10 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        descriptor: ["jammy-latest"]
+        descriptor: ["jammy-minimal"]
+        include:
+          - descriptor: "jammy-minimal"
+            config-file: jammy-minimal.sh
 
     steps:
       - uses: actions/checkout@v3
@@ -36,6 +39,7 @@ jobs:
         id: build-iso
         run: |
           cd scripts
+          mv ${{ matrix.config-file }} default_config.sh
           ./build.sh -
           cd ..
           mv scripts/ubuntu-from-scratch.iso ubuntu-${{ matrix.descriptor }}.iso          
