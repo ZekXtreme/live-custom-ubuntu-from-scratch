@@ -1,30 +1,53 @@
-name: build-jammy
+name: Jammy
 
 on:
-  # push:
-  #   branches: [ master ]
-  # pull_request:
-  #   branches: [ master ]
+  push: 
+    branches: [ main ]
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/**'
   workflow_dispatch:
-
+  
+concurrency: 
+  group: ubuntu-iso-build
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        descriptor: ["jammy-latest"]
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Build
+      - uses: actions/checkout@v3
+      
+      - name: Clean Up
+        run: |
+          docker rmi `docker images -q`
+          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+          sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+          sudo -E apt-get update
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+          echo "::group::Disk Space After Cleanup"
+          df -hlT /
+      
+      - name: Build ISO
+        id: build-iso
         run: |
           cd scripts
-          sed -i -E 's/TARGET_UBUNTU_VERSION=(.*)/TARGET_UBUNTU_VERSION="jammy"/g' default_config.sh
-          sed -i -E '/lupin-casper/d' chroot_build.sh
           ./build.sh -
           cd ..
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v3
+          mv scripts/ubuntu-from-scratch.iso ubuntu-${{ matrix.descriptor }}.iso          
+          echo ::set-output name=TIMESTAMP::"$(date +%Y-%m-%d_%H-%M-%S)"
+      - name: Compress
+        run: |
+          md5sum ubuntu-${{ matrix.descriptor }}.iso > ubuntu-${{ matrix.descriptor }}.md5sum
+          zip ubuntu-${{ matrix.descriptor }}.zip ubuntu-${{ matrix.descriptor }}.iso ubuntu-${{ matrix.descriptor }}.md5sum
+      - uses: softprops/action-gh-release@v1
         with:
-          name: ubuntu-from-scratch
-          path: |
-            scripts/ubuntu-from-scratch.iso
-            scripts/image/md5sum.txt
+          body: See Releases
+          name: ISO ${{ matrix.descriptor }} Build ${{ steps.build-iso.outputs.TIMESTAMP }}
+          tag_name: ${{ matrix.descriptor }}-${{ steps.build-iso.outputs.TIMESTAMP }}
+          files: |
+            ubuntu-${{ matrix.descriptor }}.zip

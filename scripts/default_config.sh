@@ -53,8 +53,10 @@ function customize_image() {
     curl \
     wget \
     vim \
+    git \
     nano \
     less
+
     # appimagelauncher
     apt install software-properties-common -y
     add-apt-repository ppa:appimagelauncher-team/stable
@@ -70,6 +72,29 @@ function customize_image() {
     apt update -y
     apt install librewolf -y
     
+    # Install Flatpak and apps
+    apt install flatpak -y
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak install flathub com.tutanota.Tutanota -y
+    flatpak install flathub com.discordapp.Discord -y
+    flatpak install flathub com.bitwarden.desktop -y
+    
+    # VS-Code & VLC
+    apt install vlc -y
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+    rm microsoft.gpg
+    apt update -y
+    apt install -y code
+    
+    # Github-CLI
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    apt update -y
+    apt install gh -y
+    
     # purge
     apt-get purge -y \
     transmission-gtk \
@@ -79,6 +104,8 @@ function customize_image() {
     gnome-sudoku \
     aisleriot \
     hitori
+    
+    apt-get autoremove -y
 }
 
 # Used to version the configuration.  If breaking changes occur, manual

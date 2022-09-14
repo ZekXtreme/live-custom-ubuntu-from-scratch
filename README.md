@@ -19,8 +19,12 @@ See also the list of [contributors](CONTRIBUTORS.txt) who participated in this p
 * Run the `build.sh` script in the `scripts` directory after checking this repo out locally.
 * Fork this repo and run the github action `build`.  This will generate an ISO in your github account.
 
-[![build-bionic](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-bionic.yml)
-[![build-focal](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml/badge.svg)](https://github.com/mvallim/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml)
+
+[![build-focal](https://github.com/zekxtreme/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml/badge.svg)](https://github.com/zekxtreme/live-custom-ubuntu-from-scratch/actions/workflows/build-focal.yml)
+
+
+<details>
+<summary>OG GUIDE</summary>
 
 ## Terms
 
@@ -754,6 +758,23 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## Versioning
 
 We use [GitHub](https://github.com/mvallim/live-custom-ubuntu-from-scratch) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/live-custom-ubuntu-from-scratch/tags).
+</details>
+
+
+# Currently Installed apps
+
+
+```
+AppImageLauncher
+Librewolf
+VLC
+Vscode
+Github CLI
+flatpak(Tutanota,Bitwarden, Discord)
+```
+
+
+
 
 ## License
 
