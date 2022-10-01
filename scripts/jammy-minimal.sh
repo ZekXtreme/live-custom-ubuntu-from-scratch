@@ -76,14 +76,15 @@ function customize_image() {
     apt install librewolf -y
     
      
-    # VS-Code & VLC
+    # Neovim & VLC
     apt install vlc -y
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-    install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-    echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
-    rm microsoft.gpg
-    apt update -y
-    apt install -y code
+    apt install neovim -y
+#     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+#     install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+#     echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+#     rm microsoft.gpg
+#     apt update -y
+#     apt install -y code
     
     # Github-CLI
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
